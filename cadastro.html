@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@2"></script>
+    <script src="./js/providers/person-provider.js"></script>
+    <title>Cadastro de Pessoas</title>
+</head>
+<body style="color: white; background-color: #1d2630">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">JR Sistemas</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html">Cadastrados</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="cadastro.html">Cadastro</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+    
+    <div class="container mt-5">
+        <div class="text-center">
+            <h4 class="display-5 mb-5"><strong>Cadastro de Pessoas</strong></h4>
+        </div>
+        <div class="main row justify-content-center">
+            <form action="" id="student-form" class="row justify-content-center mb-4" autocomplete="off">
+                <div class="col-7 mb-3">
+                    <label for="ID">Nome</label>
+                    <input class="form-control" id="Nome" type="text" placeholder="Entre com o nome.">
+                </div>
+                <div class="col-7 mb-3">
+                    <label for="ID">CPF</label>
+                    <input class="form-control" id="CPF" type="number" placeholder="Entre com o CPF.">
+                </div>
+                <div class="col-7 mb-3">
+                    <label for="ID">Aniversário</label>
+                    <input class="form-control" id="Aniversario" type="text" placeholder="Entre com a data de nascimento.">
+                </div>
+                <div class="col-7 mb-3">
+                    <label for="ID">Email</label>
+                    <input class="form-control" id="Email" type="text" placeholder="Entre com o email.">
+                </div>
+                <div class="col-7 mb-3">
+                    <label for="ID">Telefone</label>
+                    <input class="form-control" id="Telefone" type="number" placeholder="Entre com o telefone.">
+                </div>
+                <div class="col-7">
+                    <input class="btn btn-success add-btn" type="submit" value="Salvar" onclick="save
+                    ({ name: document.getElementById('name').value, document: document.getElementById('document').value, 
+                    dtBirth: document.getElementById('dtBirth').value, email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,});">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('people-list', {
+      props: {
+        people: {
+          type: Array,
+          required: true
+        }
+      },
+      template:
+        `<table class="table">
+          <thead><tr>
+            <th class="col">Nome</th>
+            <th class="col">Data de nascimento</th>
+            <th class="col">CPF</th>
+            <th class="col">E-mail</th>
+            <th class="col">Telefone</th>
+            <th class="col">Ações</th>
+          </tr></thead>
+          <tbody>
+            <tr v-for="pessoa in people">
+            <td>{{ pessoa.name }}</td>
+            <td>{{ pessoa.dtBirth }}</td>
+            <td>{{ pessoa.document }}</td>
+            <td>{{ pessoa.email }}</td>
+            <td>{{ pessoa.phone }}</td>
+            <td>
+              <a href="cadastro.html" class="btn btn-warning btn-sm edit">Editar</a>
+              <button onclick="delete(pessoa.id)" class="btn btn-warning btn-sm edit">Deletar</a>
+            </td>
+            </tr> 
+            
+          </tbody>
+          
+        </table>`
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        title: 'Cadastro de pessoa',
+        people: [
+          { id: 0, name: 'Felipe Cardoso', dtBirth: '12/11/2001', document: '12814715698', email: 'felipe@hotmail.com', phone: '38999741525' },
+          { id: 1, name: 'Carlos Viana', dtBirth: '01/09/1998', document: '84512396578', email: 'carlos5@gmail.com', phone: '389852147522' },
+          { id: 2, name: 'Kelly Almeda', dtBirth: '08/03/2000', document: '78945612302', email: 'kelly@gmail.com', phone: '38998527412' }
+        ],
+        personProvider: {}
+      },
+      created() {
+        // instância PersonProvider que será utilizado para efetuar as açoes
+        this.personProvider = new PersonProvider()     
+        this.findByParams()   
+      },
+      methods: {
+        findByParams(params, value) {
+          const result = this.personProvider.findByParams()
+          console.log(result)
+        },
+        findById(id) {
+          const result = this.personProvider.findById()
+          console.log(result)
+        },
+        delete(id) {
+          const result = this.personProvider.delete(id)
+          console.log(result)
+        },
+      }
+    })
+    </script>
+</body>
+</html>
